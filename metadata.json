@@ -1,0 +1,6 @@
+{
+  "name": "Birthday Surprise for Ishu",
+  "description": "A beautifully crafted personal birthday surprise app featuring a loading screen, starry night, floating balloons and hearts, interactive gift box, customized typewriter message, flipping birthday card, memory gallery, countdown timer, and an ending fireworks display with a heartfelt final message.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
