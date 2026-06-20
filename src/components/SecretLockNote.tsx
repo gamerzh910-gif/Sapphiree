@@ -4,7 +4,7 @@ import { Lock, Unlock, Key, KeyRound, AlertCircle, Heart, Sparkles, Check, Refre
 
 export const SecretLockNote: React.FC = () => {
   const [passcode, setPasscode] = useState<string>('');
-  const [savedCode, setSavedCode] = useState<string>('1234');
+  const [savedCode, setSavedCode] = useState<string>('2009');
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [isEditingNote, setIsEditingNote] = useState<boolean>(false);
@@ -63,7 +63,7 @@ export const SecretLockNote: React.FC = () => {
     const cleanInput = passcode.trim().toLowerCase();
     const cleanSaved = savedCode.trim().toLowerCase();
     
-    if (cleanInput === cleanSaved || cleanInput === '1234' || cleanInput === 'ishu') {
+    if (cleanInput === cleanSaved || cleanInput === '2009' || cleanInput === 'ishu') {
       setIsUnlocked(true);
       setErrorMsg('');
       setPasscode('');
