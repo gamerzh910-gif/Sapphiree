@@ -11,7 +11,7 @@ export const SecretLockNote: React.FC = () => {
   
   // The secret note content
   const [secretNote, setSecretNote] = useState<string>(
-    "Happy Birthday Ishu! ❤️\n\nYou found the secret vault! I wanted to write this special letter where thoughts are safe. No matter the distance or the little mock fights we have, my admiration and care for you only grows stronger. May this year bring you endless reasons to smile, beautiful friendships, and achievements you are proud of. Keep shining, you are truly one of a kind! ✨"
+    "Happy Birthday Ishu! ❤️\n\nbtw mai aapko ek baat batau mai aapse kabhi bhi kitna bhi lad lu ya pareshan kar lu par mujhe baad mai bhut bhut bhut bhut bura lagta hai 🥺 aur haa ye nhi samjhna mujhe maza aata hai aapko pareshan karne mai nhi mujhe bilkul bhi accha nhi lagta h aapko pareshan karne mai so sorry, sorry, sorry.. 🙏😭\n\nand u know as well as i love like and everything i want to... so i do not want to lose u.. ❤️ i maybe think maybe u not like me but no problem if u do not like no problem you denied me.. bcz everyone deserve better but u believe me i never cheat on u never ever.. 🥺 now your choice... but i just say i really do not want to leave u.. 🌸\n\nAap bass apna khyaal rakha karo kyoki I don't want ki aapko kuch ho.. u know i never want to hurt you i never want ki aapko kuch ho bass i want aap shi raho.. 🥰 btw if anything u want i change tell me i change myself to u.. 😊\n\nbtw sorry sorry sorryyy.. l........... ✨💖"
   );
   
   // Custom code change states
@@ -21,13 +21,11 @@ export const SecretLockNote: React.FC = () => {
   // Load from local storage on mount
   useEffect(() => {
     const localPasscode = localStorage.getItem('lock_passcode');
-    const localNote = localStorage.getItem('lock_secret_note');
     if (localPasscode) {
       setSavedCode(localPasscode);
     }
-    if (localNote) {
-      setSecretNote(localNote);
-    }
+    // Remove any legacy note overrides to keep the beautiful note strictly permanent
+    localStorage.removeItem('lock_secret_note');
   }, []);
 
   // Handle keypad button clicks
@@ -66,22 +64,16 @@ export const SecretLockNote: React.FC = () => {
     }
   };
 
-  // Save edits of the note and custom passcode
+  // Save edits of the passcode
   const handleSaveEdits = () => {
     if (newCodeInput.trim()) {
       const code = newCodeInput.trim().toLowerCase();
       setSavedCode(code);
       localStorage.setItem('lock_passcode', code);
     }
-    
-    if (tempNoteInput.trim()) {
-      setSecretNote(tempNoteInput);
-      localStorage.setItem('lock_secret_note', tempNoteInput);
-    }
 
     setIsEditingNote(false);
     setNewCodeInput('');
-    setTempNoteInput('');
   };
 
   const handleLockAgain = () => {
@@ -245,15 +237,15 @@ export const SecretLockNote: React.FC = () => {
                 {/* Real note paper scroll representation */}
                 <div 
                   id="secret-note-paper"
-                  className="w-full min-h-[140px] bg-gradient-to-br from-zinc-950 to-zinc-900 border border-zinc-800 p-4 rounded-xl text-center flex flex-col justify-center items-center shadow-inner relative max-h-[220px] overflow-y-auto"
+                  className="w-full min-h-[180px] bg-gradient-to-br from-zinc-950 to-zinc-900 border border-zinc-800/80 p-5 rounded-xl text-center flex flex-col justify-start items-center shadow-inner relative max-h-[300px] overflow-y-auto scroll-smooth"
                 >
-                  <Heart className="w-5 h-5 text-rose-500 animate-pulse fill-rose-500/25 mb-1.5" />
-                  <p className="text-xs text-zinc-200 font-serif leading-relaxed select-text whitespace-pre-wrap px-1">
+                  <Heart className="w-5 h-5 text-rose-500 animate-pulse fill-rose-500/25 mb-3 flex-shrink-0" />
+                  <p className="text-xs text-zinc-200 font-serif leading-relaxed select-text whitespace-pre-wrap px-1 mb-3">
                     "{secretNote}"
                   </p>
                   
                   {/* Delicate starburst decorations */}
-                  <span className="text-[10px] text-zinc-500 font-cursive mt-3 tracking-wider block">
+                  <span className="text-[10px] text-zinc-500 font-cursive mt-auto pt-2 tracking-wider block flex-shrink-0">
                     — forever note 💖
                   </span>
                 </div>
@@ -270,33 +262,21 @@ export const SecretLockNote: React.FC = () => {
                   <button
                     id="edit-note-write"
                     onClick={() => {
-                      setTempNoteInput(secretNote);
                       setNewCodeInput(savedCode);
                       setIsEditingNote(true);
                     }}
                     className="py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-pink-400 text-[10px] font-sans font-extrabold uppercase tracking-widest border border-pink-500/10 hover:border-pink-500/20 transition flex items-center justify-center gap-1 cursor-pointer"
                   >
-                    <PenTool className="w-3.5 h-3.5" />
-                    <span>Customize</span>
+                    <Key className="w-3.5 h-3.5" />
+                    <span>Change Code</span>
                   </button>
                 </div>
               </div>
             ) : (
-              // Inside Editing Custom Note Form
+              // Inside Editing Custom Passcode
               <div className="w-full flex flex-col gap-3">
-                <span className="text-[10px] uppercase font-sans font-extrabold tracking-wider text-zinc-400">
-                  Write personalized custom letter:
-                </span>
-                <textarea
-                  id="custom-note-textarea"
-                  value={tempNoteInput}
-                  onChange={(e) => setTempNoteInput(e.target.value)}
-                  placeholder="Type anything heartwarming... 💖"
-                  className="w-full h-24 rounded-lg bg-zinc-900 text-zinc-100 border border-zinc-800 focus:border-pink-500/40 p-2 text-xs focus:outline-none resize-none"
-                />
-
-                <span className="text-[10px] uppercase font-sans font-extrabold tracking-wider text-zinc-400 mt-1">
-                  Change secret passcode:
+                <span className="text-[10px] uppercase font-sans font-extrabold tracking-wider text-pink-400 mt-1 block text-center">
+                  Set Your Custom Lock Passcode:
                 </span>
                 <input
                   id="custom-code-input"
@@ -304,9 +284,12 @@ export const SecretLockNote: React.FC = () => {
                   maxLength={10}
                   value={newCodeInput}
                   onChange={(e) => setNewCodeInput(e.target.value)}
-                  placeholder="New Numeric Code (e.g. 5678)"
-                  className="w-full rounded-lg bg-zinc-900 text-zinc-100 border border-zinc-800 focus:border-pink-500/40 px-3 py-2 text-xs focus:outline-none font-mono"
+                  placeholder="e.g. 5678 or my birthday"
+                  className="w-full rounded-lg bg-zinc-900 text-zinc-100 border border-zinc-800/80 focus:border-pink-500/40 px-3 py-2 text-xs focus:outline-none font-mono text-center tracking-widest"
                 />
+                <p className="text-[9px] text-zinc-500 text-center font-sans tracking-tight">
+                  (You can type any numbers or letters up to 10 characters)
+                </p>
 
                 <div className="flex gap-2 mt-2 w-full">
                   <button
