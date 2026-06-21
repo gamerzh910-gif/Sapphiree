@@ -13,8 +13,10 @@ import { MemoryGallery } from './components/MemoryGallery';
 import { MemoryPolaroid } from './components/MemoryPolaroid';
 import { SecretLockNote } from './components/SecretLockNote';
 import { OneLastMessage } from './components/OneLastMessage';
+import { SiteEntryLock } from './components/SiteEntryLock';
 
 export default function App() {
+  const [isSiteUnlocked, setIsSiteUnlocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isGiftOpened, setIsGiftOpened] = useState(false);
   const [isTypewriterFinished, setIsTypewriterFinished] = useState(false);
@@ -58,6 +60,13 @@ export default function App() {
   return (
     <div id="main-frame" className="relative min-h-screen w-full text-zinc-100 flex flex-col justify-between overflow-x-hidden font-sans selection:bg-pink-500/30">
       
+      {/* 🔐 Full-screen romantic password lock when opening the site */}
+      <AnimatePresence>
+        {!isSiteUnlocked && (
+          <SiteEntryLock onUnlockSuccess={() => setIsSiteUnlocked(true)} />
+        )}
+      </AnimatePresence>
+
       {/* Dynamic Scroll Progress Bar at the absolute top of the screen */}
       <motion.div
         id="scroll-progress-indicator"

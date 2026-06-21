@@ -4,7 +4,7 @@ import { Lock, Unlock, Key, KeyRound, AlertCircle, Heart, Sparkles, Check, Refre
 
 export const SecretLockNote: React.FC = () => {
   const [passcode, setPasscode] = useState<string>('');
-  const [savedCode, setSavedCode] = useState<string>('2009');
+  const [savedCode, setSavedCode] = useState<string>('0919');
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [isEditingNote, setIsEditingNote] = useState<boolean>(false);
@@ -23,7 +23,10 @@ export const SecretLockNote: React.FC = () => {
   // Load from local storage and initialize floating hearts background
   useEffect(() => {
     const localPasscode = localStorage.getItem('lock_passcode');
-    if (localPasscode) {
+    if (localPasscode && localPasscode !== '0919') {
+      localStorage.setItem('lock_passcode', '0919');
+      setSavedCode('0919');
+    } else if (localPasscode) {
       setSavedCode(localPasscode);
     }
     // Clean any cached generic text overrides to preserve user's custom Hindi text perfectly
@@ -63,7 +66,7 @@ export const SecretLockNote: React.FC = () => {
     const cleanInput = passcode.trim().toLowerCase();
     const cleanSaved = savedCode.trim().toLowerCase();
     
-    if (cleanInput === cleanSaved || cleanInput === '2009' || cleanInput === 'ishu') {
+    if (cleanInput === cleanSaved || cleanInput === '0919' || cleanInput === 'ishu') {
       setIsUnlocked(true);
       setErrorMsg('');
       setPasscode('');
